@@ -1,6 +1,12 @@
 ui:
     uv run trucklogistics-ui
 
+docker-up:
+    docker compose up -d
+
+docker-down:
+    docker compose down
+
 test:
     uv run pytest
 
@@ -11,4 +17,4 @@ format:
     uv run ruff format .
 
 typecheck:
-    uv run mypy src
+    uv run mypy src/app
