@@ -20,9 +20,16 @@ dev = [
     "ruff>=0.15.14",
 ]
 
+[tool.ruff.lint.per-file-ignores]
+"src/app/cli/main.py" = ["E402"]
+"src/app/ui/main.py" = ["E402"]
+"src/app/infrastructure/db/migrations/env.py" = ["E402"]
+
 [tool.mypy]
 python_version = "3.13"
 strict = true
+mypy_path = "src"
+explicit_package_bases = true
 
 [tool.uv]
 package = true

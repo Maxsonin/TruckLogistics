@@ -1,7 +1,8 @@
 from contextlib import contextmanager
 from typing import Generator
 
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import Session, sessionmaker
+
 from app.infrastructure.db.engine import engine
 
 SessionLocal = sessionmaker(

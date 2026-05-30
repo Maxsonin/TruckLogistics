@@ -4,19 +4,7 @@ load_dotenv()
 
 import typer
 
+from app.cli.truck import truck_app
+
 app = typer.Typer()
-
-
-@app.command()
-def hello(name: str) -> None:
-    print(f"Hello {name}")
-
-
-@app.command()
-def add(a: int, b: int) -> None:
-    print(a + b)
-
-
-@app.command()
-def version() -> None:
-    print("TruckLogistics v1.0.0")
+app.add_typer(truck_app)
