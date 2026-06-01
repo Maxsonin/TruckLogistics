@@ -1,9 +1,8 @@
-import uuid
 from enum import Enum
 from typing import Protocol
 
 from app.core.domain.truck import Truck
-from app.core.truck.dto.truck import CreateTruckDTO
+from app.core.truck.dto.truck import CreateTruckDTO, UpdateTruckDTO
 
 
 class TruckFilter(str, Enum):
@@ -16,6 +15,8 @@ class TruckRepositoryProtocol(Protocol):
     def create(self, truck: Truck) -> Truck: ...
     def get_all(self) -> list[Truck]: ...
     def get_by_id(self, id: str) -> Truck | None: ...
+    def update(self, truck: Truck) -> Truck: ...
+    def delete(self, id: str) -> None: ...
 
 
 class AssignmentQueryProtocol(Protocol):
@@ -38,7 +39,7 @@ class TruckService:
             raise ValueError("Invalid plate number")
 
         truck = Truck(
-            id=str(uuid.uuid4()),
+            id="",
             plate_number=plate,
             model=cmd.model,
         )
@@ -50,6 +51,23 @@ class TruckService:
         if truck is None:
             raise ValueError(f"Truck '{id}' not found")
         return truck
+
+    def update_truck(self, truck_id: str, cmd: UpdateTruckDTO) -> Truck:
+        existing = self.repo.get_by_id(truck_id)
+        if existing is None:
+            raise ValueError(f"Truck '{truck_id}' not found")
+        plate = cmd.plate_number.strip().upper()
+        if len(plate) < 3:
+            raise ValueError("Invalid plate number")
+        return self.repo.update(Truck(id=truck_id, plate_number=plate, model=cmd.model))
+
+    def delete_truck(self, truck_id: str) -> None:
+        if self.repo.get_by_id(truck_id) is None:
+            raise ValueError(f"Truck '{truck_id}' not found")
+        if self.assignment_query:
+            if truck_id in self.assignment_query.get_active_truck_ids():
+                raise ValueError("Cannot delete a truck with an active assignment")
+        self.repo.delete(truck_id)
 
     def list_trucks(self, filter: TruckFilter = TruckFilter.ALL) -> list[Truck]:
         trucks = self.repo.get_all()

@@ -12,6 +12,8 @@ from alembic import context
 
 from app.infrastructure.db.base import Base
 from app.infrastructure.db.models import truck  # noqa: F401
+from app.infrastructure.db.models import driver  # noqa: F401
+from app.infrastructure.db.models import assignment  # noqa: F401
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

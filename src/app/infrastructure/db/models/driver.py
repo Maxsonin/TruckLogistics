@@ -4,13 +4,13 @@ from sqlalchemy.orm import Mapped, mapped_column
 from app.infrastructure.db.base import Base
 
 
-class TruckORM(Base):
-    __tablename__ = "trucks"
+class DriverORM(Base):
+    __tablename__ = "drivers"
 
     id: Mapped[str] = mapped_column(
         String,
         primary_key=True,
         server_default=text("gen_random_uuid()::text"),
     )
-    plate_number: Mapped[str] = mapped_column(String(20), unique=True)
-    model: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    name: Mapped[str] = mapped_column(String(100), nullable=False)
+    phone: Mapped[str | None] = mapped_column(String(30), nullable=True)
