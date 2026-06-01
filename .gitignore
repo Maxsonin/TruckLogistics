@@ -13,5 +13,8 @@ wheels/
 .mypy_cache/
 .ruff_cache/
 
+# Testing
+.pytest_cache
+
 # Environment variables
 .env
