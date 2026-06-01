@@ -172,7 +172,11 @@ class CreateAssignmentDialog(QDialog):
 
         try:
             with get_session() as session:
-                AssignmentService(AssignmentRepository(session)).create_assignment(
+                AssignmentService(
+                    AssignmentRepository(session),
+                    TruckRepository(session),
+                    DriverRepository(session),
+                ).create_assignment(
                     CreateAssignmentDTO(
                         truck_id=truck_id,
                         driver_id=driver_id,

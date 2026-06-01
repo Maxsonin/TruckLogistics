@@ -3,6 +3,8 @@ from typing import Protocol
 
 from app.core.assignment.dto.assignment import CreateAssignmentDTO
 from app.core.domain.assignment import Assignment, AssignmentStatus
+from app.core.domain.driver import Driver
+from app.core.domain.truck import Truck
 
 
 class AssignmentRepositoryProtocol(Protocol):
@@ -12,9 +14,24 @@ class AssignmentRepositoryProtocol(Protocol):
     def cancel(self, id: str) -> Assignment: ...
 
 
+class TruckLookupProtocol(Protocol):
+    def get_by_id(self, id: str) -> Truck | None: ...
+
+
+class DriverLookupProtocol(Protocol):
+    def get_by_id(self, id: str) -> Driver | None: ...
+
+
 class AssignmentService:
-    def __init__(self, repo: AssignmentRepositoryProtocol) -> None:
+    def __init__(
+        self,
+        repo: AssignmentRepositoryProtocol,
+        truck_repo: TruckLookupProtocol | None = None,
+        driver_repo: DriverLookupProtocol | None = None,
+    ) -> None:
         self.repo = repo
+        self.truck_repo = truck_repo
+        self.driver_repo = driver_repo
 
     def create_assignment(self, cmd: CreateAssignmentDTO) -> Assignment:
         all_assignments = self.repo.get_all()
@@ -24,14 +41,18 @@ class AssignmentService:
             for a in all_assignments
         )
         if truck_conflict:
-            raise ValueError(f"Truck '{cmd.truck_id}' already has an active assignment")
+            truck = self.truck_repo.get_by_id(cmd.truck_id) if self.truck_repo else None
+            label = truck.plate_number if truck else cmd.truck_id
+            raise ValueError(f"Truck '{label}' already has an active assignment")
 
         driver_conflict = any(
             a.driver_id == cmd.driver_id and a.status == AssignmentStatus.ACTIVE
             for a in all_assignments
         )
         if driver_conflict:
-            raise ValueError(f"Driver '{cmd.driver_id}' already has an active assignment")
+            driver = self.driver_repo.get_by_id(cmd.driver_id) if self.driver_repo else None
+            label = driver.name if driver else cmd.driver_id
+            raise ValueError(f"Driver '{label}' already has an active assignment")
 
         assignment = Assignment(
             id="",
