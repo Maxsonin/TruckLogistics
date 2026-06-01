@@ -1,10 +1,14 @@
 import sys
 from PySide6.QtWidgets import QApplication
+from app.ui.theme import ThemeManager
 from app.ui.windows.main_window import MainWindow
 
 
 def run_app() -> None:
     app = QApplication(sys.argv)
+    app.setStyle("Fusion")
+
+    ThemeManager.init()
 
     window = MainWindow()
     window.show()
