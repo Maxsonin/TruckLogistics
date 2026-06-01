@@ -24,14 +24,16 @@ class AssignmentService:
             for a in all_assignments
         )
         if truck_conflict:
-            raise ValueError(f"Truck '{cmd.truck_id}' already has an active assignment")
+            truck_label = cmd.truck_label or cmd.truck_id
+            raise ValueError(f"Truck '{truck_label}' already has an active assignment")
 
         driver_conflict = any(
             a.driver_id == cmd.driver_id and a.status == AssignmentStatus.ACTIVE
             for a in all_assignments
         )
         if driver_conflict:
-            raise ValueError(f"Driver '{cmd.driver_id}' already has an active assignment")
+            driver_label = cmd.driver_label or cmd.driver_id
+            raise ValueError(f"Driver '{driver_label}' already has an active assignment")
 
         assignment = Assignment(
             id="",

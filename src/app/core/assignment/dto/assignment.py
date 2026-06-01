@@ -10,3 +10,5 @@ class CreateAssignmentDTO:
     destination: str
     estimated_duration_min: int
     started_at: datetime
+    truck_label: str = ""
+    driver_label: str = ""

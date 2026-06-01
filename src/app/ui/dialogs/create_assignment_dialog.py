@@ -170,6 +170,11 @@ class CreateAssignmentDialog(QDialog):
             tzinfo=timezone.utc,
         )
 
+        selected_truck = next((t for t in self._trucks if t.id == truck_id), None)
+        selected_driver = next((d for d in self._drivers if d.id == driver_id), None)
+        truck_label = selected_truck.plate_number if selected_truck else truck_id
+        driver_label = selected_driver.name if selected_driver else driver_id
+
         try:
             with get_session() as session:
                 AssignmentService(AssignmentRepository(session)).create_assignment(
@@ -180,6 +185,8 @@ class CreateAssignmentDialog(QDialog):
                         destination=destination,
                         estimated_duration_min=duration,
                         started_at=py_dt,
+                        truck_label=truck_label,
+                        driver_label=driver_label,
                     )
                 )
         except ValueError as exc:
