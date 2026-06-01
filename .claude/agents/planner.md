@@ -68,13 +68,13 @@ Create detailed steps with:
 
 ### Phase 1: [Phase Name]
 
-1. **[Step Name]** (File: path/to/file.ts)
+1. **[Step Name]** (File: path/to/file.py)
    - Action: Specific action to take
    - Why: Reason for this step
    - Dependencies: None / Requires step X
    - Risk: Low/Medium/High
 
-2. **[Step Name]** (File: path/to/file.ts)
+2. **[Step Name]** (File: path/to/file.py)
    ...
 
 ### Phase 2: [Phase Name]
@@ -84,8 +84,6 @@ Create detailed steps with:
 ## Testing Strategy
 
 - Unit tests: [files to test]
-- Integration tests: [flows to test]
-- E2E tests: [user journeys to test]
 
 ## Risks & Mitigations
 
@@ -177,8 +175,6 @@ Stripe Checkout, and webhook events keep subscription status in sync.
 ## Testing Strategy
 
 - Unit tests: Webhook event parsing, tier checking logic
-- Integration tests: Checkout session creation, webhook processing
-- E2E tests: Full upgrade flow (Stripe test mode)
 
 ## Risks & Mitigations
 

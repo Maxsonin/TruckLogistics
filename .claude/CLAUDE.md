@@ -71,7 +71,7 @@ src/app/
 
 - **Domain objects are immutable** (`@dataclass(frozen=True)`). Repositories accept domain objects and return new domain objects — never ORM instances.
 - **ORM models are infrastructure-only.** Never import `*ORM` classes into `core/`.
-- **Status is never persisted.** `TruckStatus` / `DriverStatus` / `AssignmentStatus` are derived at read time from timestamps and the `is_cancelled` flag.
+- **Status is never persisted.** `TruckStatus` / `DriverStatus` / `AssignmentStatus` are derived at read time from timestamps. Cancellation is represented by a nullable `cancelled_at` timestamp — no separate boolean flag.
 - **Session management**: always use the `get_session()` context manager from `session.py`; do not create sessions manually.
 - **When adding a new ORM model**, import it in `migrations/env.py` alongside the existing models so Alembic autogenerate picks it up.
 

@@ -57,7 +57,6 @@ class Assignment:
     started_at: datetime
     estimated_duration_min: int
 
-    is_cancelled: bool = False
     cancelled_at: Optional[datetime] = None
 
     created_at: datetime = None
